@@ -1,0 +1,40 @@
+# 通用运行配置示例
+# 根据环境复制为 config/settings.yaml 再做修改
+
+runtime:
+  default_provider: siliconflow
+  # 全局并发/节流，可被 provider-specific 覆盖
+  concurrency: 3
+  sleep_seconds: 1.0
+  max_retries: 3
+
+providers:
+  siliconflow:
+    api_base: https://api.siliconflow.cn/v1
+    model: moonshotai/Kimi-K2-Instruct-0905
+    api_key_env: SILICONFLOW_API_KEY
+    think_mode: false
+    concurrency: 3
+    sleep_seconds: 1.0
+  deepseek:
+    api_base: https://api.deepseek.com/v1
+    model: deepseek-chat
+    api_key_env: DEEPSEEK_API_KEY
+    concurrency: 3
+    sleep_seconds: 1.0
+    content_risk_code: content_exists_risk
+
+prompt_dirs:
+  policy: prompt/prompt_zhengce
+  report: prompt/prompt_baogao
+  plan: prompt/prompt_guihua
+
+outputs:
+  base_path: output/api_results
+  html_visualization: true
+  jsonl_dump: true
+
+logging:
+  level: INFO
+  structured: true
+  file: logs/openextract.log

@@ -1,0 +1,40 @@
+# 示例：复刻 PolicyKnowledgeBase 中的 14 Prompt 流水线
+
+pipeline:
+  name: policy_labeling
+  description: >
+    从 Excel 读取政策原文，按 1~7 号提示词顺序执行，自动把 4.1~4.4 合并为“实体关系”，
+    并根据 Provider 的 Content Risk 逻辑输出审阅文件。
+  source:
+    type: excel
+    path: data/processed/zhengcetest1.xlsx
+    sheet: Sheet2
+    id_column: Id
+    title_column: articleTitle
+    content_column: articleContent
+  prompts:
+    dir: prompt/prompt_zhengce
+    merge_entities_under: "实体关系"
+    classification_section: "分类"
+    temperature_overrides:
+      "行业一级": 0.7
+      "行业二级": 0.7
+      "领域一级": 0.7
+      "领域二级": 0.7
+  provider:
+    name: siliconflow
+    concurrency: 3
+    sleep_seconds: 1.0
+    timeout: 120
+  runtime:
+    temperature: 0.2
+    max_tokens: 1500
+    max_rows: null
+  outputs:
+    json_path: output/api_results
+    html_review: output/review_html
+    jsonl_dump: output/api_results/jsonl
+  safeguards:
+    fallback_policy_type: "综合类"
+    content_risk_code: content_exists_risk
+    salvage_single_field: true
