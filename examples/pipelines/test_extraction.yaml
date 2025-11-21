@@ -1,0 +1,41 @@
+# 测试流水线配置
+
+pipeline:
+  name: test_policy_extraction
+  description: >
+    测试流水线：从 Excel 读取 3 条示例政策，提取关键信息
+  
+  source:
+    type: excel
+    path: data/test/test_policies.xlsx
+    sheet: 0
+    id_column: Id
+    title_column: articleTitle
+    content_column: articleContent
+  
+  prompts:
+    dir: prompt/test
+    temperature_overrides: {}
+  
+  provider:
+    name: siliconflow
+    concurrency: 1
+    sleep_seconds: 1.0
+    timeout: 60
+  
+  runtime:
+    temperature: 0.2
+    max_tokens: 800
+    max_rows: null
+  
+  outputs:
+    json_path: output/test_results
+    jsonl_dump: output/test_results/jsonl
+
+# 全局设置（需要配置 API Key）
+providers:
+  siliconflow:
+    api_base: https://api.siliconflow.cn/v1
+    model: zai-org/GLM-4.6
+    api_key_env: SILICONFLOW_API_KEY
+    think_mode: false

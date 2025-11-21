@@ -1,0 +1,20 @@
+[project]
+name = "openextract"
+version = "0.1.0"
+description = "可复用的结构化抽取框架，用于从文档中提取结构化信息"
+requires-python = ">=3.11"
+dependencies = [
+    "pyyaml>=6.0",
+    "pandas>=2.0.0",
+    "openpyxl>=3.1.0",
+    "requests>=2.31.0",
+    "python-dotenv>=1.2.1",
+]
+
+[project.scripts]
+openextract = "openextract.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
